@@ -1,12 +1,14 @@
 const puppeteer = require("puppeteer");
+const config = require("./config");
 
-const HOST = "http://member.y24.kucdn.cn";
+const HOST = "http:www.qq.com";
 
 (async () => {
   const browser = await puppeteer.launch({
-    // devtools: true,
-    headless: false,
+    devtools: true,
+    // headless: false,
     defaultViewport: null,
+    // executablePath: config.browserPath.chrome,
     args: [
       "--disable-gpu",
       "--no-sandbox",
@@ -15,13 +17,6 @@ const HOST = "http://member.y24.kucdn.cn";
     ],
   });
   const page = (await browser.pages())[0];
-  await page.goto(`${HOST}/biz/#/home`);
-  await page.setCookie({
-    name: "ZSSESSIONID",
-    value: "fd67606e-2405-41ab-9a43-ec00f07921fd",
-  });
+  await page.goto(`${HOST}`);
   await page.waitForTimeout(1000);
-  await page.goto(`${HOST}/biz/#/goods/management/goods_list`);
-  await page.waitForTimeout(1000);
-  await page.goto(`${HOST}/biz/#/goods/management/release_goods`);
 })();

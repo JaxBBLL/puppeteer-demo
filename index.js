@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const config = require("./config");
 
 const keywords = ["夹克", "猫头鹰", "芋头", "鼠标", "键盘"];
 let index = 0;
@@ -7,9 +8,16 @@ let index = 0;
   const browser = await puppeteer.launch({
     devtools: true,
     // headless: true,
-    args: ["--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage"],
+    defaultViewport: null,
+    // executablePath: config.browserPath.chrome,
+    args: [
+      "--disable-gpu",
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--start-maximized",
+    ],
   });
-  const page = await browser.newPage();
+  const page = (await browser.pages())[0];
   await page.setUserAgent(
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36"
   );
@@ -19,7 +27,7 @@ let index = 0;
   async function go() {
     const keyword = keywords[index];
     if (!keyword) {
-      // await browser.close();
+      await browser.close();
       return;
     }
     await page.goto("https://www.baidu.com");
