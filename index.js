@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const config = require("./config");
 
-const keywords = ["夹克", "猫头鹰", "芋头", "鼠标", "键盘"];
+const keywords = ["挖掘机", "压路机", "罐头", "茶叶", "鸭蛋"];
 let index = 0;
 
 (async () => {
@@ -21,6 +21,11 @@ let index = 0;
   await page.setUserAgent(
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.0 Safari/537.36"
   );
+  await page.evaluateOnNewDocument(() => {
+    const newProto = navigator.__proto__;
+    delete newProto.webdriver;
+    navigator.__proto__ = newProto;
+  });
 
   go();
 
@@ -44,9 +49,9 @@ let index = 0;
     await oInput.focus();
     await oInput.type(keyword, { delay: random(5, 10) * 100 });
     await oInput.press("Enter");
-    await page.waitForNavigation({
-      waitUntil: "domcontentloaded",
-    });
+    // await page.waitForNavigation({
+    //   waitUntil: "domcontentloaded",
+    // });
     await page.waitForTimeout(2000);
     await page.screenshot({
       path: `dist/${keyword}.png`,
